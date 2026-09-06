@@ -1,4 +1,5 @@
 import { Carousel } from "components/carousel";
+import { NewArrivals } from "components/grid/new-arrivals";
 import { ThreeItemGrid } from "components/grid/three-items";
 import Footer from "components/layout/footer";
 
@@ -15,6 +16,7 @@ export default function HomePage() {
     <>
       <ThreeItemGrid />
       <Carousel />
+      <NewArrivals />
       <Footer />
     </>
   );
