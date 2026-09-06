@@ -11,7 +11,10 @@ export default async function Footer() {
   const currentYear = new Date().getFullYear();
   const skeleton =
     "w-full h-6 animate-pulse rounded-sm bg-neutral-200 dark:bg-neutral-700";
-  const menu = await getMenu("next-js-frontend-footer-menu");
+  const menu = [
+    ...(await getMenu("next-js-frontend-footer-menu")),
+    { title: "Wishlist", path: "/wishlist" },
+  ].sort((a, b) => a.title.localeCompare(b.title));
   const siteName = SITE_NAME || "Store";
 
   return (
