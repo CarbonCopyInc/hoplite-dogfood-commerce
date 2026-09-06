@@ -121,6 +121,7 @@ export default async function ProductPage(props: {
         </div>
         <Suspense fallback={null}>
           <Reviews
+            key={product.handle}
             productHandle={product.handle}
             initialReviews={getReviews(product.handle)}
           />
