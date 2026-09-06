@@ -5,7 +5,7 @@ import {
   ShoppingBagIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import Price from "components/price";
+import Price from "components/product/price";
 import type { Product } from "lib/shopify/types";
 import Image from "next/image";
 import Link from "next/link";

@@ -1,6 +1,6 @@
 import { AddToCart } from "components/cart/add-to-cart";
 import { WishlistToggle } from "components/wishlist/wishlist-toggle";
-import Price from "components/price";
+import Price from "components/product/price";
 import Prose from "components/prose";
 import { Product } from "lib/shopify/types";
 import { VariantSelector } from "./variant-selector";
