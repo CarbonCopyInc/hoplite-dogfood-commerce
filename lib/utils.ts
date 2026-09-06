@@ -24,13 +24,17 @@ export const validateEnvironmentVariables = () => {
     "SHOPIFY_STORE_DOMAIN",
     "SHOPIFY_STOREFRONT_ACCESS_TOKEN",
   ];
-  const missingEnvironmentVariables = [] as string[];
+  const missingEnvironmentVariables = requiredEnvironmentVariables.filter(
+    (envVar) => !process.env[envVar],
+  );
 
-  requiredEnvironmentVariables.forEach((envVar) => {
-    if (!process.env[envVar]) {
-      missingEnvironmentVariables.push(envVar);
-    }
-  });
+  // With no Shopify credentials the site runs against the built-in demo
+  // catalog, so a fully missing pair is expected rather than an error.
+  if (
+    missingEnvironmentVariables.length === requiredEnvironmentVariables.length
+  ) {
+    return;
+  }
 
   if (missingEnvironmentVariables.length) {
     throw new Error(
