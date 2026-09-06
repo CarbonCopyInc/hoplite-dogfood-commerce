@@ -30,12 +30,14 @@ function makeProduct({
   description,
   price,
   imageSeeds,
+  createdAt,
 }: {
   handle: string;
   title: string;
   description: string;
   price: string;
   imageSeeds: string[];
+  createdAt: string;
 }): Product {
   const id = `demo-${handle}`;
   const variant: ProductVariant = {
@@ -64,6 +66,7 @@ function makeProduct({
     images,
     seo: { title, description },
     tags: [],
+    createdAt,
     updatedAt: "2026-01-05T00:00:00.000Z",
   };
 }
@@ -75,6 +78,7 @@ const products: Product[] = [
     description: "A warm, dimmable LED desk lamp with a brushed aluminum arm.",
     price: "89.00",
     imageSeeds: ["aurora-desk-lamp", "aurora-desk-lamp-detail"],
+    createdAt: "2026-06-12T10:00:00.000Z",
   }),
   makeProduct({
     handle: "cedar-notebook",
@@ -82,6 +86,7 @@ const products: Product[] = [
     description: "A refillable A5 notebook bound in soft recycled leather.",
     price: "24.00",
     imageSeeds: ["cedar-notebook", "cedar-notebook-open"],
+    createdAt: "2026-06-26T10:00:00.000Z",
   }),
   makeProduct({
     handle: "halo-wireless-speaker",
@@ -90,6 +95,7 @@ const products: Product[] = [
       "A compact 360° speaker with rich bass and 12 hours of battery life.",
     price: "149.00",
     imageSeeds: ["halo-wireless-speaker", "halo-wireless-speaker-top"],
+    createdAt: "2026-07-09T10:00:00.000Z",
   }),
   makeProduct({
     handle: "nimbus-backpack",
@@ -97,6 +103,7 @@ const products: Product[] = [
     description: "A weatherproof 22L daypack with a padded laptop sleeve.",
     price: "120.00",
     imageSeeds: ["nimbus-backpack", "nimbus-backpack-side"],
+    createdAt: "2026-07-21T10:00:00.000Z",
   }),
   makeProduct({
     handle: "pebble-mug",
@@ -105,6 +112,7 @@ const products: Product[] = [
       "A matte stoneware mug that holds 350ml of your favorite brew.",
     price: "18.00",
     imageSeeds: ["pebble-mug"],
+    createdAt: "2026-08-02T10:00:00.000Z",
   }),
   makeProduct({
     handle: "solstice-sunglasses",
@@ -112,6 +120,7 @@ const products: Product[] = [
     description: "Polarized acetate sunglasses with UV400 protection.",
     price: "95.00",
     imageSeeds: ["solstice-sunglasses", "solstice-sunglasses-case"],
+    createdAt: "2026-08-15T10:00:00.000Z",
   }),
   makeProduct({
     handle: "tide-runner-sneakers",
@@ -119,6 +128,7 @@ const products: Product[] = [
     description: "Lightweight knit sneakers for all-day comfort.",
     price: "130.00",
     imageSeeds: ["tide-runner-sneakers", "tide-runner-sneakers-pair"],
+    createdAt: "2026-08-22T10:00:00.000Z",
   }),
   makeProduct({
     handle: "vela-throw-blanket",
@@ -126,6 +136,7 @@ const products: Product[] = [
     description: "An oversized woven throw in 100% organic cotton.",
     price: "65.00",
     imageSeeds: ["vela-throw-blanket", "vela-throw-blanket-folded"],
+    createdAt: "2026-08-28T10:00:00.000Z",
   }),
   makeProduct({
     handle: "zephyr-desk-organizer",
@@ -133,6 +144,7 @@ const products: Product[] = [
     description: "A walnut and steel organizer for pens, phones, and keys.",
     price: "42.00",
     imageSeeds: ["zephyr-desk-organizer"],
+    createdAt: "2026-09-03T10:00:00.000Z",
   }),
 ];
 
@@ -272,7 +284,7 @@ function sortProducts(
         );
       case "CREATED_AT":
         return (
-          new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
         );
       default:
         return 0;
