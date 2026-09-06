@@ -1,6 +1,7 @@
 import { getCollectionProducts } from "lib/shopify";
 import Link from "next/link";
 import { GridTileImage } from "./grid/tile";
+import { WishlistToggle } from "./wishlist/wishlist-toggle";
 
 export async function Carousel() {
   // Collections that start with `hidden-*` are hidden from the search page.
@@ -37,6 +38,10 @@ export async function Carousel() {
                 sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
               />
             </Link>
+            <WishlistToggle
+              product={product}
+              className="absolute right-3 top-3 z-20"
+            />
           </li>
         ))}
       </ul>
