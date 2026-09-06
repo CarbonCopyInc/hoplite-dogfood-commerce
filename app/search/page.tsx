@@ -4,6 +4,8 @@ import { defaultSort, sorting } from "lib/constants";
 import { getProducts } from "lib/shopify";
 import type { Metadata } from "next";
 
+const { SITE_NAME } = process.env;
+
 export async function generateMetadata(props: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }): Promise<Metadata> {
@@ -15,6 +17,7 @@ export async function generateMetadata(props: {
     description: "Search for products in the store.",
     openGraph: {
       type: "website",
+      siteName: SITE_NAME!,
     },
   };
 }
