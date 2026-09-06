@@ -232,8 +232,20 @@ function recomputeCart(cart: Cart) {
   cart.cost.totalTaxAmount.amount = "0.00";
 }
 
-function requireCart(): Cart {
-  throw new Error("Cart not found");
+// Cart mutations run against the cookie's cart; when that id is unknown (e.g.
+// the cookie outlived a dev-server restart) or absent, mint a fresh cart and
+// reset the cookie rather than failing the mutation.
+async function cartFromCookie(): Promise<Cart> {
+  const cookieStore = await cookies();
+  const cartId = cookieStore.get("cartId")?.value;
+  const existing = cartId ? carts.get(cartId) : undefined;
+  if (existing) return existing;
+
+  const id = `demo-cart-${randomUUID()}`;
+  const cart = emptyCart(id);
+  carts.set(id, cart);
+  cookieStore.set("cartId", id);
+  return cart;
 }
 
 function findVariant(
@@ -279,8 +291,7 @@ export async function createCart(): Promise<Cart> {
 export async function addToCart(
   lines: { merchandiseId: string; quantity: number }[],
 ): Promise<Cart> {
-  const cartId = (await cookies()).get("cartId")?.value;
-  const cart = (cartId && carts.get(cartId)) || requireCart();
+  const cart = await cartFromCookie();
 
   for (const line of lines) {
     const found = findVariant(line.merchandiseId);
@@ -325,8 +336,7 @@ export async function addToCart(
 }
 
 export async function removeFromCart(lineIds: string[]): Promise<Cart> {
-  const cartId = (await cookies()).get("cartId")?.value;
-  const cart = (cartId && carts.get(cartId)) || requireCart();
+  const cart = await cartFromCookie();
   cart.lines = cart.lines.filter((line) => !lineIds.includes(line.id!));
   recomputeCart(cart);
   return cart;
@@ -335,8 +345,7 @@ export async function removeFromCart(lineIds: string[]): Promise<Cart> {
 export async function updateCart(
   lines: { id: string; merchandiseId: string; quantity: number }[],
 ): Promise<Cart> {
-  const cartId = (await cookies()).get("cartId")?.value;
-  const cart = (cartId && carts.get(cartId)) || requireCart();
+  const cart = await cartFromCookie();
 
   for (const line of lines) {
     const item = cart.lines.find((l) => l.id === line.id);
@@ -401,10 +410,8 @@ export async function getMenu(_handle: string): Promise<Menu[]> {
   ];
 }
 
-export async function getPage(handle: string): Promise<Page> {
-  // Mirrors the Shopify client's signature; unknown handles resolve to
-  // undefined at runtime and callers treat that as notFound().
-  return pages.find((page) => page.handle === handle)!;
+export async function getPage(handle: string): Promise<Page | undefined> {
+  return pages.find((page) => page.handle === handle);
 }
 
 export async function getPages(): Promise<Page[]> {
