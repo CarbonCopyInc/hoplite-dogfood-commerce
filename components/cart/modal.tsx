@@ -188,6 +188,8 @@ export default function CartModal() {
                                     aria-valuemin={0}
                                     aria-valuenow={item.quantity}
                                     onKeyDown={(event) => {
+                                      if (event.repeat) return;
+
                                       const type =
                                         event.key === "ArrowUp" ||
                                         event.key === "ArrowRight"
