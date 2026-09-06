@@ -1,4 +1,5 @@
 import { AddToCart } from "components/cart/add-to-cart";
+import { WishlistToggle } from "components/wishlist/wishlist-toggle";
 import Price from "components/price";
 import Prose from "components/prose";
 import { Product } from "lib/shopify/types";
@@ -23,7 +24,12 @@ export function ProductDescription({ product }: { product: Product }) {
           html={product.descriptionHtml}
         />
       ) : null}
-      <AddToCart product={product} />
+      <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="flex-1">
+          <AddToCart product={product} />
+        </div>
+        <WishlistToggle product={product} className="h-14 w-full sm:w-14" />
+      </div>
     </>
   );
 }

@@ -1,4 +1,5 @@
 import { GridTileImage } from "components/grid/tile";
+import { WishlistToggle } from "components/wishlist/wishlist-toggle";
 import { getCollectionProducts } from "lib/shopify";
 import type { Product } from "lib/shopify/types";
 import Link from "next/link";
@@ -20,29 +21,35 @@ function ThreeItemGridItem({
           : "md:col-span-2 md:row-span-1"
       }
     >
-      <Link
-        className="relative block aspect-square h-full w-full"
-        href={`/product/${item.handle}`}
-        prefetch={true}
-      >
-        <GridTileImage
-          src={item.featuredImage.url}
-          fill
-          sizes={
-            size === "full"
-              ? "(min-width: 768px) 66vw, 100vw"
-              : "(min-width: 768px) 33vw, 100vw"
-          }
-          priority={priority}
-          alt={item.title}
-          label={{
-            position: size === "full" ? "center" : "bottom",
-            title: item.title as string,
-            amount: item.priceRange.maxVariantPrice.amount,
-            currencyCode: item.priceRange.maxVariantPrice.currencyCode,
-          }}
+      <div className="relative h-full w-full">
+        <Link
+          className="relative block aspect-square h-full w-full"
+          href={`/product/${item.handle}`}
+          prefetch={true}
+        >
+          <GridTileImage
+            src={item.featuredImage.url}
+            fill
+            sizes={
+              size === "full"
+                ? "(min-width: 768px) 66vw, 100vw"
+                : "(min-width: 768px) 33vw, 100vw"
+            }
+            priority={priority}
+            alt={item.title}
+            label={{
+              position: size === "full" ? "center" : "bottom",
+              title: item.title as string,
+              amount: item.priceRange.maxVariantPrice.amount,
+              currencyCode: item.priceRange.maxVariantPrice.currencyCode,
+            }}
+          />
+        </Link>
+        <WishlistToggle
+          product={item}
+          className="absolute right-3 top-3 z-20"
         />
-      </Link>
+      </div>
     </div>
   );
 }
