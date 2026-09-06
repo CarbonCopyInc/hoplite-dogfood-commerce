@@ -4,6 +4,8 @@ import Prose from "components/prose";
 import { getPage } from "lib/shopify";
 import { notFound } from "next/navigation";
 
+const { SITE_NAME } = process.env;
+
 export async function generateMetadata(props: {
   params: Promise<{ page: string }>;
 }): Promise<Metadata> {
@@ -19,6 +21,7 @@ export async function generateMetadata(props: {
       publishedTime: page.createdAt,
       modifiedTime: page.updatedAt,
       type: "article",
+      siteName: SITE_NAME!,
     },
   };
 }

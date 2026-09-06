@@ -6,6 +6,8 @@ import Grid from "components/grid";
 import ProductGridItems from "components/layout/product-grid-items";
 import { defaultSort, sorting } from "lib/constants";
 
+const { SITE_NAME } = process.env;
+
 export async function generateMetadata(props: {
   params: Promise<{ collection: string }>;
 }): Promise<Metadata> {
@@ -20,6 +22,9 @@ export async function generateMetadata(props: {
       collection.seo?.description ||
       collection.description ||
       `${collection.title} products`,
+    openGraph: {
+      siteName: SITE_NAME!,
+    },
   };
 }
 

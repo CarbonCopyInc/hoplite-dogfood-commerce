@@ -11,6 +11,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
+const { SITE_NAME } = process.env;
+
 export async function generateMetadata(props: {
   params: Promise<{ handle: string }>;
 }): Promise<Metadata> {
@@ -33,18 +35,19 @@ export async function generateMetadata(props: {
         follow: indexable,
       },
     },
-    openGraph: url
-      ? {
-          images: [
-            {
-              url,
-              width,
-              height,
-              alt,
-            },
-          ],
-        }
-      : null,
+    openGraph: {
+      siteName: SITE_NAME!,
+      ...(url && {
+        images: [
+          {
+            url,
+            width,
+            height,
+            alt,
+          },
+        ],
+      }),
+    },
   };
 }
 

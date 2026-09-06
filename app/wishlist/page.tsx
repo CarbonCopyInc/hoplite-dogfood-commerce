@@ -5,9 +5,15 @@ import { getProducts } from "lib/shopify";
 import type { Product } from "lib/shopify/types";
 import type { Metadata } from "next";
 
+const { SITE_NAME } = process.env;
+
 export const metadata: Metadata = {
   title: "Wishlist",
   description: "Your saved products.",
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME!,
+  },
 };
 
 export default async function WishlistRoute() {
