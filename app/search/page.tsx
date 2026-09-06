@@ -2,11 +2,22 @@ import Grid from "components/grid";
 import ProductGridItems from "components/layout/product-grid-items";
 import { defaultSort, sorting } from "lib/constants";
 import { getProducts } from "lib/shopify";
+import type { Metadata } from "next";
 
-export const metadata = {
-  title: "Search",
-  description: "Search for products in the store.",
-};
+export async function generateMetadata(props: {
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}): Promise<Metadata> {
+  const searchParams = await props.searchParams;
+  const { q: searchValue } = searchParams as { [key: string]: string };
+
+  return {
+    title: searchValue ? `Search results for "${searchValue}"` : "Search",
+    description: "Search for products in the store.",
+    openGraph: {
+      type: "website",
+    },
+  };
+}
 
 export default async function SearchPage(props: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;

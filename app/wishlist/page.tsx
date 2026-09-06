@@ -8,6 +8,9 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Wishlist",
   description: "Your saved products.",
+  openGraph: {
+    type: "website",
+  },
 };
 
 export default async function WishlistRoute() {
