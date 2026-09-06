@@ -2,7 +2,7 @@
 
 # Next.js Commerce
 
-A high-performance, server-rendered Next.js App Router ecommerce application.
+A high-performance, server-rendered Next.js App Router ecommerce application (Hoplite dogfood fork).
 
 This template uses React Server Components, Server Actions, `Suspense`, `useOptimistic`, and more.
 
