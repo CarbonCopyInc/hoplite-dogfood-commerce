@@ -170,17 +170,49 @@ export default function CartModal() {
                                     item.cost.totalAmount.currencyCode
                                   }
                                 />
-                                <div className="ml-auto flex h-9 flex-row items-center rounded-full border border-neutral-200 dark:border-neutral-700">
+                                <div
+                                  className="ml-auto flex h-9 flex-row items-center rounded-full border border-neutral-200 dark:border-neutral-700"
+                                  role="group"
+                                  aria-label={`Quantity for ${item.merchandise.product.title}`}
+                                >
                                   <EditItemQuantityButton
                                     item={item}
                                     type="minus"
                                     optimisticUpdate={updateCartItem}
                                   />
-                                  <p className="w-6 text-center">
-                                    <span className="w-full text-sm">
-                                      {item.quantity}
-                                    </span>
-                                  </p>
+                                  <output
+                                    className="w-6 text-center text-sm"
+                                    role="spinbutton"
+                                    tabIndex={0}
+                                    aria-label={`Quantity for ${item.merchandise.product.title}`}
+                                    aria-valuemin={0}
+                                    aria-valuenow={item.quantity}
+                                    onKeyDown={(event) => {
+                                      const type =
+                                        event.key === "ArrowUp" ||
+                                        event.key === "ArrowRight"
+                                          ? "plus"
+                                          : event.key === "ArrowDown" ||
+                                              event.key === "ArrowLeft"
+                                            ? "minus"
+                                            : null;
+
+                                      if (!type) return;
+
+                                      event.preventDefault();
+                                      event.currentTarget.parentElement
+                                        ?.querySelector<HTMLButtonElement>(
+                                          `[aria-label="${
+                                            type === "plus"
+                                              ? "Increase"
+                                              : "Reduce"
+                                          } item quantity"]`,
+                                        )
+                                        ?.click();
+                                    }}
+                                  >
+                                    {item.quantity}
+                                  </output>
                                   <EditItemQuantityButton
                                     item={item}
                                     type="plus"
