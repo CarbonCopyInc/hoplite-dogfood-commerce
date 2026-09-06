@@ -12,6 +12,11 @@ export default {
         hostname: "cdn.shopify.com",
         pathname: "/s/files/**",
       },
+      // Placeholder images used by the built-in demo catalog (demo mode).
+      {
+        protocol: "https",
+        hostname: "picsum.photos",
+      },
     ],
   },
 };
