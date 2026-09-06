@@ -4,7 +4,9 @@ import Footer from "components/layout/footer";
 import { Gallery } from "components/product/gallery";
 import { ProductDescription } from "components/product/product-description";
 import { RecentlyViewedProducts } from "components/product/recently-viewed-products";
+import { Reviews } from "components/product/reviews/reviews";
 import { HIDDEN_PRODUCT_TAG } from "lib/constants";
+import { getReviews } from "lib/reviews";
 import {
   getProduct,
   getProductRecommendations,
@@ -117,6 +119,13 @@ export default async function ProductPage(props: {
             </Suspense>
           </div>
         </div>
+        <Suspense fallback={null}>
+          <Reviews
+            key={product.handle}
+            productHandle={product.handle}
+            initialReviews={getReviews(product.handle)}
+          />
+        </Suspense>
         <RelatedProducts products={relatedProducts} />
         <RecentlyViewedProducts
           currentProductHandle={product.handle}
