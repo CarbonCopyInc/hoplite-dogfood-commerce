@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { randomUUID } from "node:crypto";
 import type {
   Cart,
   CartItem,
@@ -203,7 +204,6 @@ const pages: Page[] = [
 ];
 
 const carts = new Map<string, Cart>();
-let cartSeq = 0;
 
 const emptyCart = (id: string): Cart => ({
   id,
@@ -270,7 +270,7 @@ function sortProducts(
 }
 
 export async function createCart(): Promise<Cart> {
-  const id = `demo-cart-${Date.now()}-${cartSeq++}`;
+  const id = `demo-cart-${randomUUID()}`;
   const cart = emptyCart(id);
   carts.set(id, cart);
   return cart;
@@ -296,7 +296,7 @@ export async function addToCart(
       ).toFixed(2);
     } else {
       const item: CartItem = {
-        id: `demo-line-${cartSeq++}`,
+        id: `demo-line-${randomUUID()}`,
         quantity: line.quantity,
         cost: {
           totalAmount: {

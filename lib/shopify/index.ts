@@ -1,12 +1,24 @@
 import * as demo from "./demo";
 import * as shopify from "./shopify";
 
+const hasStoreDomain = Boolean(process.env.SHOPIFY_STORE_DOMAIN);
+const hasStorefrontAccessToken = Boolean(
+  process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+);
+
+if (hasStoreDomain !== hasStorefrontAccessToken) {
+  const missingVariable = hasStoreDomain
+    ? "SHOPIFY_STOREFRONT_ACCESS_TOKEN"
+    : "SHOPIFY_STORE_DOMAIN";
+
+  throw new Error(
+    `Invalid Shopify configuration: ${missingVariable} is missing. Set both SHOPIFY_STORE_DOMAIN and SHOPIFY_STOREFRONT_ACCESS_TOKEN to use Shopify, or unset both to use the demo catalog.`,
+  );
+}
+
 // With no Shopify credentials the storefront runs against an in-memory demo
-// catalog so the app boots and renders without a real store. Set
-// SHOPIFY_STORE_DOMAIN and SHOPIFY_STOREFRONT_ACCESS_TOKEN to use Shopify.
-const demoMode =
-  !process.env.SHOPIFY_STORE_DOMAIN ||
-  !process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
+// catalog so the app boots and renders without a real store.
+const demoMode = !hasStoreDomain;
 
 const impl = demoMode ? demo : shopify;
 
