@@ -6,7 +6,7 @@
     "start": "next start",
     "prettier": "prettier --write --ignore-unknown .",
     "prettier:check": "prettier --check --ignore-unknown .",
-    "test": "pnpm prettier:check"
+    "test": "vitest run"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
@@ -29,6 +29,7 @@
     "prettier": "3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4.0.14",
-    "typescript": "5.8.2"
+    "typescript": "5.8.2",
+    "vitest": "^5.0.0"
   }
 }
