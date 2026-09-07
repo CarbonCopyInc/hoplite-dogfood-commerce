@@ -10,6 +10,9 @@ export default function SiteFooter() {
         <p className="mt-2">
           &copy; {new Date().getFullYear()} {siteName}. All rights reserved.
         </p>
+        <a href="#" rel="nofollow" className="mt-4 inline-block">
+          Back to top
+        </a>
       </div>
     </footer>
   );
