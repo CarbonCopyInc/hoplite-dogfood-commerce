@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const { SITE_NAME } = process.env;
 
 export default function SiteFooter() {
@@ -13,6 +15,9 @@ export default function SiteFooter() {
         <a href="#" rel="nofollow" className="mt-4 inline-block">
           Back to top
         </a>
+        <Link href="/products" className="mt-4 inline-block">
+          Products
+        </Link>
       </div>
     </footer>
   );
