@@ -1,5 +1,6 @@
 import { CartProvider } from "components/cart/cart-context";
 import { Navbar } from "components/layout/navbar";
+import SiteFooter from "components/site-footer";
 import { WelcomeToast } from "components/welcome-toast";
 import { getWishlist } from "components/wishlist/actions";
 import { WishlistProvider } from "components/wishlist/wishlist-context";
@@ -44,6 +45,7 @@ export default async function RootLayout({
               <Toaster closeButton />
               <WelcomeToast />
             </main>
+            <SiteFooter />
           </CartProvider>
         </WishlistProvider>
       </body>
