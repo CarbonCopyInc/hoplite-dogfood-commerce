@@ -10,6 +10,7 @@ import type {
   Product,
   ProductVariant,
 } from "./types";
+import { sortProducts } from "./sort";
 
 // In-memory catalog used when no Shopify credentials are configured, so the
 // storefront boots and renders without a real store. Swap in real credentials
@@ -268,29 +269,6 @@ function findVariant(
     if (variant) return { product, variant };
   }
   return undefined;
-}
-
-function sortProducts(
-  list: Product[],
-  reverse?: boolean,
-  sortKey?: string,
-): Product[] {
-  const sorted = [...list].sort((a, b) => {
-    switch (sortKey) {
-      case "PRICE":
-        return (
-          Number(a.priceRange.minVariantPrice.amount) -
-          Number(b.priceRange.minVariantPrice.amount)
-        );
-      case "CREATED_AT":
-        return (
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
-      default:
-        return 0;
-    }
-  });
-  return reverse ? sorted.reverse() : sorted;
 }
 
 export async function createCart(): Promise<Cart> {
