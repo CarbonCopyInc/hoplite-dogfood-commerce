@@ -24,7 +24,7 @@ export async function NewArrivals() {
                 href={`/product/${product.handle}`}
                 prefetch={true}
               >
-                <span className="absolute left-3 top-3 z-10 rounded-full bg-black px-2.5 py-1 text-xs font-semibold text-white dark:bg-white dark:text-black">
+                <span className="absolute left-3 top-14 z-10 rounded-full bg-black px-2.5 py-1 text-xs font-semibold text-white dark:bg-white dark:text-black">
                   New
                 </span>
                 <GridTileImage

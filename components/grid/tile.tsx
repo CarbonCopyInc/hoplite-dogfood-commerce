@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import Image from "next/image";
 import Label from "../label";
+import { PromoBadge } from "../promo-badge";
 
 export function GridTileImage({
   isInteractive = true,
@@ -37,6 +38,7 @@ export function GridTileImage({
           {...props}
         />
       ) : null}
+      <PromoBadge />
       {label ? (
         <Label
           title={label.title}
