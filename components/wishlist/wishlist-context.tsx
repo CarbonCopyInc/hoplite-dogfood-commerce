@@ -46,14 +46,31 @@ export function parseWishlist(value: string | null): string[] {
   }
 }
 
+export function readWishlist(storage: Pick<Storage, "getItem">): string[] {
+  try {
+    return parseWishlist(storage.getItem(WISHLIST_STORAGE_KEY));
+  } catch {
+    return [];
+  }
+}
+
+export function writeWishlist(
+  storage: Pick<Storage, "setItem">,
+  wishlist: string[],
+): void {
+  try {
+    storage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(wishlist));
+  } catch {
+    // Keep wishlist controls usable in memory when browser storage is blocked.
+  }
+}
+
 export function WishlistProvider({ children }: { children: React.ReactNode }) {
   const [wishlist, setWishlist] = useState<string[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    setWishlist(
-      parseWishlist(window.localStorage.getItem(WISHLIST_STORAGE_KEY)),
-    );
+    setWishlist(readWishlist(window.localStorage));
     setIsLoaded(true);
 
     const syncWishlist = (event: StorageEvent) => {
@@ -70,7 +87,7 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
     (update: (current: string[]) => string[]) => {
       setWishlist((current) => {
         const next = update(current);
-        window.localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(next));
+        writeWishlist(window.localStorage, next);
         return next;
       });
     },
