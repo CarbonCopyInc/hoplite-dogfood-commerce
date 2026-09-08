@@ -1,56 +1,106 @@
 "use client";
 
 import {
-  addToWishlist,
-  removeFromWishlist,
-  toggleWishlist,
-} from "components/wishlist/actions";
-import {
   createContext,
-  startTransition,
-  use,
+  useCallback,
   useContext,
+  useEffect,
   useMemo,
-  useOptimistic,
+  useState,
 } from "react";
 
-type WishlistAction =
-  | { type: "ADD"; handle: string }
-  | { type: "REMOVE"; handle: string }
-  | { type: "TOGGLE"; handle: string };
+export const WISHLIST_STORAGE_KEY = "storefront:wishlist";
 
 type WishlistContextValue = {
-  wishlistPromise: Promise<string[]>;
+  wishlist: string[];
+  wishlistCount: number;
+  isLoaded: boolean;
+  isWishlisted: (handle: string) => boolean;
+  addWishlistItem: (handle: string) => void;
+  removeWishlistItem: (handle: string) => void;
+  toggleWishlistItem: (handle: string) => void;
 };
 
 const WishlistContext = createContext<WishlistContextValue | undefined>(
   undefined,
 );
 
-function wishlistReducer(wishlist: string[], action: WishlistAction): string[] {
-  switch (action.type) {
-    case "ADD":
-      return wishlist.includes(action.handle)
-        ? wishlist
-        : [...wishlist, action.handle];
-    case "REMOVE":
-      return wishlist.filter((handle) => handle !== action.handle);
-    case "TOGGLE":
-      return wishlist.includes(action.handle)
-        ? wishlist.filter((handle) => handle !== action.handle)
-        : [...wishlist, action.handle];
+export function parseWishlist(value: string | null): string[] {
+  if (!value) return [];
+
+  try {
+    const parsed: unknown = JSON.parse(value);
+    if (!Array.isArray(parsed)) return [];
+
+    return [
+      ...new Set(
+        parsed
+          .filter((item): item is string => {
+            return typeof item === "string" && item.trim().length > 0;
+          })
+          .map((item) => item.trim()),
+      ),
+    ];
+  } catch {
+    return [];
   }
 }
 
-export function WishlistProvider({
-  children,
-  wishlistPromise,
-}: {
-  children: React.ReactNode;
-  wishlistPromise: Promise<string[]>;
-}) {
+export function WishlistProvider({ children }: { children: React.ReactNode }) {
+  const [wishlist, setWishlist] = useState<string[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setWishlist(
+      parseWishlist(window.localStorage.getItem(WISHLIST_STORAGE_KEY)),
+    );
+    setIsLoaded(true);
+
+    const syncWishlist = (event: StorageEvent) => {
+      if (event.key === WISHLIST_STORAGE_KEY) {
+        setWishlist(parseWishlist(event.newValue));
+      }
+    };
+
+    window.addEventListener("storage", syncWishlist);
+    return () => window.removeEventListener("storage", syncWishlist);
+  }, []);
+
+  const updateWishlist = useCallback(
+    (update: (current: string[]) => string[]) => {
+      setWishlist((current) => {
+        const next = update(current);
+        window.localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(next));
+        return next;
+      });
+    },
+    [],
+  );
+
+  const value = useMemo<WishlistContextValue>(
+    () => ({
+      wishlist,
+      wishlistCount: wishlist.length,
+      isLoaded,
+      isWishlisted: (handle) => wishlist.includes(handle),
+      addWishlistItem: (handle) =>
+        updateWishlist((current) =>
+          current.includes(handle) ? current : [...current, handle],
+        ),
+      removeWishlistItem: (handle) =>
+        updateWishlist((current) => current.filter((item) => item !== handle)),
+      toggleWishlistItem: (handle) =>
+        updateWishlist((current) =>
+          current.includes(handle)
+            ? current.filter((item) => item !== handle)
+            : [...current, handle],
+        ),
+    }),
+    [isLoaded, updateWishlist, wishlist],
+  );
+
   return (
-    <WishlistContext.Provider value={{ wishlistPromise }}>
+    <WishlistContext.Provider value={value}>
       {children}
     </WishlistContext.Provider>
   );
@@ -62,40 +112,5 @@ export function useWishlist() {
     throw new Error("useWishlist must be used within a WishlistProvider");
   }
 
-  const initialWishlist = use(context.wishlistPromise);
-  const [wishlist, updateOptimisticWishlist] = useOptimistic(
-    initialWishlist,
-    wishlistReducer,
-  );
-
-  const runOptimisticAction = (
-    action: WishlistAction,
-    mutation: () => Promise<string[]>,
-  ) => {
-    startTransition(async () => {
-      updateOptimisticWishlist(action);
-      await mutation();
-    });
-  };
-
-  return useMemo(
-    () => ({
-      wishlist,
-      wishlistCount: wishlist.length,
-      isWishlisted: (handle: string) => wishlist.includes(handle),
-      addWishlistItem: (handle: string) =>
-        runOptimisticAction({ type: "ADD", handle }, () =>
-          addToWishlist(handle),
-        ),
-      removeWishlistItem: (handle: string) =>
-        runOptimisticAction({ type: "REMOVE", handle }, () =>
-          removeFromWishlist(handle),
-        ),
-      toggleWishlistItem: (handle: string) =>
-        runOptimisticAction({ type: "TOGGLE", handle }, () =>
-          toggleWishlist(handle),
-        ),
-    }),
-    [wishlist],
-  );
+  return context;
 }

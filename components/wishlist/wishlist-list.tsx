@@ -82,11 +82,19 @@ export function WishlistList({
   products,
   removeWishlistItem,
   addToCart,
+  isLoaded,
 }: {
   products: Product[];
   removeWishlistItem: (handle: string) => void;
   addToCart: (product: Product) => void;
+  isLoaded: boolean;
 }) {
+  if (!isLoaded) {
+    return (
+      <div className="h-52 animate-pulse rounded-lg bg-neutral-100 dark:bg-neutral-800" />
+    );
+  }
+
   if (products.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-neutral-300 py-20 text-center dark:border-neutral-700">
