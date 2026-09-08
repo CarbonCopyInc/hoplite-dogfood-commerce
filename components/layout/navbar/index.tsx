@@ -8,7 +8,7 @@ import { Suspense } from "react";
 import MobileMenu from "./mobile-menu";
 import Search, { SearchSkeleton } from "./search";
 
-const { SITE_NAME } = process.env;
+const { SITE_NAME = "Hoplite Demo Store" } = process.env;
 
 export async function Navbar() {
   const menu = await getMenu("next-js-frontend-header-menu");
@@ -29,7 +29,7 @@ export async function Navbar() {
           >
             <LogoSquare />
             <div className="ml-2 flex-none text-sm font-medium uppercase md:hidden lg:block">
-              {SITE_NAME}
+              {SITE_NAME} — Live
             </div>
           </Link>
           {menu.length ? (

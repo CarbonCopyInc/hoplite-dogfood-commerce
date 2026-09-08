@@ -17,6 +17,11 @@ export default {
         protocol: "https",
         hostname: "picsum.photos",
       },
+      // Additional remote host permitted for storefront imagery.
+      {
+        protocol: "https",
+        hostname: "images.example.com",
+      },
     ],
   },
 };

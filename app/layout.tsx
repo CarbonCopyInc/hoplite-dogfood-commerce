@@ -11,12 +11,12 @@ import { Toaster } from "sonner";
 import "./globals.css";
 import { baseUrl } from "lib/utils";
 
-const { SITE_NAME } = process.env;
+const { SITE_NAME = "Hoplite Demo Store" } = process.env;
 
 export const metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: SITE_NAME!,
+    default: SITE_NAME,
     template: `%s | ${SITE_NAME}`,
   },
   robots: {
