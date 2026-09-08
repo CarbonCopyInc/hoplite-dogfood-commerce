@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "ports": {"preview": 3000, "additional": {}},
+  "ports": {"preview": 3000, "additional": {"inventory": 4000}},
   "scripts": {
     "setup": {"enabled": true, "command": "pnpm install --frozen-lockfile"},
-    "run": {"enabled": true, "command": "pnpm dev"},
+    "run": {"enabled": true, "command": "pnpm dev:all"},
     "archive": {"enabled": true, "command": null},
     "check": {"enabled": true, "command": null}
   },

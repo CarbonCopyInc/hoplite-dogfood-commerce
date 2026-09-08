@@ -1,6 +1,7 @@
 import { AddToCart } from "components/cart/add-to-cart";
 import { WishlistToggle } from "components/wishlist/wishlist-toggle";
 import Price from "components/product/price";
+import { Stock } from "components/product/stock";
 import Prose from "components/prose";
 import { Product } from "lib/shopify/types";
 import { VariantSelector } from "./variant-selector";
@@ -16,6 +17,7 @@ export function ProductDescription({ product }: { product: Product }) {
             currencyCode={product.priceRange.maxVariantPrice.currencyCode}
           />
         </div>
+        <Stock handle={product.handle} />
       </div>
       <VariantSelector options={product.options} variants={product.variants} />
       {product.descriptionHtml ? (
