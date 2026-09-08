@@ -60,6 +60,8 @@ pnpm dev
 
 Your app should now be running on [localhost:3000](http://localhost:3000/).
 
+> **Preview timing (2026-09-08 UTC):** Fresh workspace dependency setup took 3.6s (`pnpm` reported 112 packages added). Starting `pnpm dev` and polling `/` reached the first observed HTTP 200 in 6.318s; Hoplite's managed preview status was observed ready 25.675s after the status check began.
+
 <details>
   <summary>Expand if you work at Vercel and want to run locally and / or contribute</summary>
 
