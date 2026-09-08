@@ -1,8 +1,6 @@
 import Footer from "components/layout/footer";
-import { getWishlist } from "components/wishlist/actions";
 import { WishlistPage } from "components/wishlist/wishlist-page";
 import { getProducts } from "lib/shopify";
-import type { Product } from "lib/shopify/types";
 import type { Metadata } from "next";
 
 const { SITE_NAME } = process.env;
@@ -17,16 +15,7 @@ export const metadata: Metadata = {
 };
 
 export default async function WishlistRoute() {
-  const [wishlist, products] = await Promise.all([
-    getWishlist(),
-    getProducts({}),
-  ]);
-  const productsByHandle = new Map(
-    products.map((product) => [product.handle, product]),
-  );
-  const savedProducts = wishlist
-    .map((handle) => productsByHandle.get(handle))
-    .filter((product): product is Product => Boolean(product));
+  const products = await getProducts({});
 
   return (
     <>
@@ -38,7 +27,7 @@ export default async function WishlistRoute() {
           Keep track of products you want to come back to.
         </p>
         <div className="mt-8">
-          <WishlistPage products={savedProducts} />
+          <WishlistPage products={products} />
         </div>
       </section>
       <Footer />

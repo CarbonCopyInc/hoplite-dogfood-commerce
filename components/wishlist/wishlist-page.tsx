@@ -9,7 +9,10 @@ import { useWishlist } from "./wishlist-context";
 
 export function WishlistPage({ products }: { products: Product[] }) {
   const { addCartItem } = useCart();
-  const { removeWishlistItem } = useWishlist();
+  const { isLoaded, removeWishlistItem, wishlist } = useWishlist();
+  const savedProducts = wishlist
+    .map((handle) => products.find((product) => product.handle === handle))
+    .filter((product): product is Product => Boolean(product));
 
   const addToCart = (product: Product) => {
     const variant = product.variants[0];
@@ -24,7 +27,8 @@ export function WishlistPage({ products }: { products: Product[] }) {
   return (
     <WishlistList
       addToCart={addToCart}
-      products={products}
+      isLoaded={isLoaded}
+      products={savedProducts}
       removeWishlistItem={removeWishlistItem}
     />
   );
